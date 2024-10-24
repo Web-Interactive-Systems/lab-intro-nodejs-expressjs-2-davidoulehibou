@@ -16,6 +16,27 @@ const app = express();
   - if there is no token throw an error
   */
 
+
+const verifyMiddleware = (req, res, next) => {
+  const token = req.query.token;
+
+  if (!token) {
+    return res.status(401).json({ error: "Token is required" });
+  }
+
+  next();
+};
+
+
+app.use(verifyMiddleware); 
+
+
+app.get("/", (req, res, next) => {
+  const token = req.query.token;
+  res.json({ message: `Welcome to the API! token : ${token}` });
+});
+
+
 app.listen(3000, () => {
   console.log("Server is listening on port 3000....");
 });
